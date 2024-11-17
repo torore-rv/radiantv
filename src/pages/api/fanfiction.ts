@@ -35,7 +35,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 SELECT f.id, f.original_id, f.name, f.summary, f.tag, f.description, f.created_at, o.title as original_title
                 FROM fanfiction f
                          JOIN original o ON f.original_id = o.id
-                ORDER BY o.title DESC, f.name DESC
+                ORDER BY o.title, f.name ASC
             `;
             const result = await pool.query(query);
 
