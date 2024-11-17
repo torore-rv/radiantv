@@ -15,7 +15,6 @@
     "incremental": true,
     "baseUrl": ".",  // 프로젝트 루트 디렉토리에서 시작
     "paths": {
-      "@/*": ["./*"],                           // 루트 디렉토리 alias 설정
       "@/styles/*": ["src/styles/*"],           // styles alias 설정
       "@/components/*": ["src/components/*"],   // components alias 설정
       "@pages/*": ["src/pages/*"],              // pages alias 설정

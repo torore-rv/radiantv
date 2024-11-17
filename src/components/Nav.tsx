@@ -1,7 +1,7 @@
 import React from "react";
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { NovelLayout } from "@pages/NovelLayout";
+// import { NovelLayout } from "@pages/NovelLayout";
 
 const Nav = () => {
     const router = useRouter();

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "@/styles/globals.css";
+// import "@/styles/globals.css";
 
 interface Novel {
     id: string;
