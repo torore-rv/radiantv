@@ -25,7 +25,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     f.summary,
                     f.tag,
                     f.description,
-                    e.created_at,  -- episode에서 created_at 가져오기
+                    e.created_at AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Seoul' AS created_at,
                     o.title as original_title
                 FROM fanfiction f
                          LEFT OUTER JOIN original o ON f.original_id = o.id

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { toZonedTime } from 'date-fns-tz';
+import { utcToZonedTime } from 'date-fns-tz';
 import Link from "next/link";
 
 interface Novel {
@@ -23,6 +23,7 @@ interface NovelListProps {
     filterTags: string[];
     searchQuery: string;
 }
+
 
 const NovelList: React.FC<NovelListProps> = ({ filterTags, searchQuery }) => {
     const [novels, setNovels] = useState<GroupedData>({});
@@ -90,7 +91,7 @@ const NovelList: React.FC<NovelListProps> = ({ filterTags, searchQuery }) => {
                                 </div>
                             ))
                         ) : (
-                            <p>작품이 없습니다.</p>  // 배열이 없을 때 대체 UI
+                            <p>작품이 없습니다.</p>
                         )}
                     </div>
                 </div>
@@ -98,30 +99,41 @@ const NovelList: React.FC<NovelListProps> = ({ filterTags, searchQuery }) => {
         </>
     );
 };
-
+// 클라이언트 시간대 가져오기
 const getClientTimeZone = () => {
-    return Intl.DateTimeFormat().resolvedOptions().timeZone; // 클라이언트의 시간대
+    const clientTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    // console.log('Client TimeZone:', clientTimeZone); // 클라이언트의 타임존 로그
+    return clientTimeZone; // 클라이언트의 타임존 리턴
 };
 
 const isNew = (createdAt: string) => {
     const timeZone = getClientTimeZone(); // 클라이언트 시간대 가져오기
     const now = new Date();
 
-    // UTC 시간을 클라이언트 시간대로 변환
-    const targetDate = toZonedTime(new Date(createdAt), timeZone);
-    const nowInTimeZone = toZonedTime(now, timeZone);
+    // 서버에서 받은 UTC 시간을 클라이언트 시간대로 변환
+    const targetDate = utcToZonedTime(new Date(createdAt), timeZone);
+    // console.log('Converted targetDate:', targetDate); // 변환된 시간 출력
 
-    // 시간 차이 계산
-    return (nowInTimeZone.getTime() - targetDate.getTime()) / (1000 * 60 * 60) <= 72;
+    // 현재 시간을 클라이언트 시간대에 맞게 변환
+    const nowInTimeZone = utcToZonedTime(now, timeZone);
+    // console.log('Converted nowInTimeZone:', nowInTimeZone); // 변환된 현재 시간 출력
+
+    // 시간 차이 계산 (72시간 이내인지 비교)
+    const diffInHours = (nowInTimeZone.getTime() - targetDate.getTime()) / (1000 * 60 * 60); // 시간 차이 계산
+
+    return diffInHours <= 72;
 };
 
 const formatTime = (dateString: string) => {
     const timeZone = getClientTimeZone(); // 클라이언트 시간대 가져오기
-    const targetDate = toZonedTime(new Date(dateString), timeZone); // UTC 시간 -> 클라이언트 시간대
-    const now = new Date();
-    const nowInTimeZone = toZonedTime(now, timeZone);
+    const targetDate = utcToZonedTime(new Date(dateString), timeZone); // UTC 시간을 클라이언트 시간대에 맞게 변환
+    // console.log('Converted targetDate:', targetDate); // 변환된 시간 출력
 
-    const diffInMinutes = (nowInTimeZone.getTime() - targetDate.getTime()) / (1000 * 60);
+    const now = new Date();
+    const nowInTimeZone = utcToZonedTime(now, timeZone); // 현재 시간을 클라이언트 시간대에 맞게 변환
+    // console.log('Converted nowInTimeZone:', nowInTimeZone); // 변환된 현재 시간 출력
+
+    const diffInMinutes = (nowInTimeZone.getTime() - targetDate.getTime()) / (1000 * 60); // 분 단위로 차이 계산
 
     if (diffInMinutes < 60) return `${Math.floor(diffInMinutes)}분 전`;
     if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)}시간 전`;
@@ -130,5 +142,6 @@ const formatTime = (dateString: string) => {
     const day = String(targetDate.getDate()).padStart(2, "0");
     return `${month}.${day}`;
 };
+
 
 export default NovelList;
