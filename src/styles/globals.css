@@ -105,21 +105,52 @@ nav a.active {
 
 
 /* Search */
-.search-container {
-  padding: 1rem;
-  background: var(--card-bg);
-  border-bottom: 1px solid var(--border-color);
-}
+/*.search-container {*/
+/*  max-width: 800px; !* body와 동일한 max-width *!*/
+/*  padding: 1rem;*/
+/*  !*background: var(--card-bg);*!*/
+/*  border-bottom: 1px solid var(--border-color);*/
+/*  !*border-radius: 12px;*!*/
+/*  !*box-shadow: 0 2px 4px rgba(0,0,0,0.05);*!*/
+/*}*/
 
-.search-input {
-  width: 100%;
+.search-input, .name-input {
+  flex: 1; /* 추가: 남은 공간을 차지하도록 */
   padding: 0.8rem;
   border: 2px solid var(--border-color);
   border-radius: 8px;
   font-size: 0.9rem;
-  margin-bottom: 0.8rem;
   background: var(--background-color);
   transition: border-color 0.2s ease;
+  margin-bottom: 0; /* 수정: 하단 마진 제거 */
+  margin-right: 8px; /* 추가: 버튼과의 간격 */
+}
+
+/* Name Change */
+.name-change-container, .search-container {
+  padding: 1.5rem;
+  /*background-color: var(--card-bg);*/
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  /*margin: 2rem auto;*/
+}
+
+.name-change-header {
+  display: flex;
+  align-items: center;
+  /*margin-bottom: 1rem;*/
+}
+
+.save-button {
+  padding: 0.8rem 1.2rem;
+  background-color: var(--accent-color);
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  white-space: nowrap; /* 추가: 버튼 텍스트 줄바꿈 방지 */
 }
 
 .search-input:focus {
@@ -310,22 +341,6 @@ nav a.active {
   color: #5C7B7B;
 }
 
-
-/* Name Change */
-.name-change-container {
-  padding: 1.5rem;
-  background-color: var(--card-bg);
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  margin: 2rem auto;
-}
-
-.name-change-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
 .icon {
   font-size: 1.5rem;
   color: var(--primary-color);
@@ -344,22 +359,6 @@ nav a.active {
 .divider {
   margin: 1rem 0;
   border-top: 1px solid var(--border-color);
-}
-
-.input-container {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.name-input {
-  padding: 0.8rem;
-  border: 2px solid var(--border-color);
-  border-radius: 8px;
-  font-size: 1rem;
-  background: var(--background-color);
-  color: var(--primary-color);
-  transition: border-color 0.3s ease;
 }
 
 .name-input:focus {

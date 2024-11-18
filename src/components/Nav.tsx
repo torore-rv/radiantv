@@ -14,7 +14,6 @@ const Nav = () => {
                 <Link href="/NovelLayout" className={currentPath === '/NovelLayout' ? 'active' : ''}>소설</Link>
                 {session && (
                     <>
-                        <Link href="/EpisodeList" className={currentPath === '/EpisodeList' ? 'active' : ''}>Episode</Link>
                         <Link href="/AdminPage" className={currentPath === '/AdminPage' ? 'active' : ''}>Admin</Link>
                     </>
                 )}

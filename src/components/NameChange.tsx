@@ -1,17 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const NameChange: React.FC = () => {
-    // 상태 관리 (useState 사용)
-    const [name, setName] = useState<string>('');
+    const [name, setName] = useState<string>('○○');
 
-    // 이름 변경 핸들러
+    useEffect(() => {
+        // 초기 로드시 저장된 이름 가져오기
+        const savedName = localStorage.getItem('userName');
+        if (savedName) {
+            setName(savedName);
+        }
+    }, []);
+
     const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setName(e.target.value); // 상태 업데이트
+        setName(e.target.value);
     };
 
-    // 이름 저장 핸들러
     const handleSave = () => {
-        console.log('Saved name:', name);
+        if (name.trim()) {
+            try {
+                localStorage.setItem('userName', name.trim());
+                alert('이름이 저장되었습니다!');
+            } catch (error) {
+                console.error('Error saving name:', error);
+                alert('이름 저장에 실패했습니다.');
+            }
+        } else {
+            alert('이름을 입력해주세요.');
+        }
     };
 
     return (
@@ -29,7 +44,11 @@ const NameChange: React.FC = () => {
                     onChange={handleNameChange}
                     className="name-input"
                 />
-                <button onClick={handleSave} className="save-button">
+                <button
+                    onClick={handleSave}
+                    className="save-button"
+                    disabled={!name.trim()}
+                >
                     이름 저장
                 </button>
             </div>

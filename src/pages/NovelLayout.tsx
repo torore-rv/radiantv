@@ -1,14 +1,31 @@
-import React from 'react';
-import Search from "@/components/Search";
-import NameChange from "@/components/NameChange";
-import NovelList from "@pages/NovelList";
+import React, { useState } from "react";
+import dynamic from 'next/dynamic';
+import Search from "@/components/Search";  // 직접 import로 변경
 
-export default function NovelLayout() {
+const NovelList = dynamic(() => import("./NovelList"));
+const NameChange = dynamic(() => import("@/components/NameChange"));
+
+interface NovelLayoutProps {}
+
+const NovelLayout: React.FC<NovelLayoutProps> = () => {
+    const [filterTags, setFilterTags] = useState<string[]>([]);
+    const [searchQuery, setSearchQuery] = useState<string>("");
+
+    const handleTagChange = (tags: string[]) => {
+        setFilterTags(tags);
+    };
+
+    const handleSearchSubmit = (query: string) => {
+        setSearchQuery(query);
+    };
+
     return (
         <div>
-            <Search />
+            <Search onTagChange={handleTagChange} onSearchSubmit={handleSearchSubmit} />
             <NameChange />
-            <NovelList />
+            <NovelList filterTags={filterTags} searchQuery={searchQuery} />
         </div>
     );
-}
+};
+
+export default NovelLayout;

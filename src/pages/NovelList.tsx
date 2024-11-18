@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-// import "@/styles/globals.css";
 
 interface Novel {
     id: string;
@@ -9,74 +8,89 @@ interface Novel {
     tag: string;
     description: string;
     created_at: string;
+    original_title: string;
 }
 
 interface GroupedData {
     [key: string]: {
         originalTitle: string;
         novels: Novel[];
-    }
+    };
 }
 
-const NovelList = () => {
-    const [groupedData, setGroupedData] = useState<GroupedData>({});
+interface NovelListProps {
+    filterTags: string[];
+    searchQuery: string;
+}
+
+const NovelList: React.FC<NovelListProps> = ({ filterTags, searchQuery }) => {
+    const [novels, setNovels] = useState<GroupedData>({});
 
     useEffect(() => {
         const fetchNovels = async () => {
             try {
-                const response = await fetch("/api/fanfiction");
+                const params = new URLSearchParams();
+                if (searchQuery) {
+                    params.append('query', searchQuery);
+                }
+                if (filterTags.length > 0) {
+                    params.append('tag', filterTags[0]);
+                }
+
+                const response = await fetch(`/api/fanfiction?${params}`);
                 const data = await response.json();
-                setGroupedData(data);
+                setNovels(data);
             } catch (error) {
-                console.error("Error fetching fanfictions:", error);
+                console.error("Error:", error);
             }
         };
 
         fetchNovels();
-    }, []);
+    }, [filterTags, searchQuery]);
 
     return (
         <>
-            {Object.entries(groupedData).map(([originalId, group]) => (
+            {Object.entries(novels).map(([originalId, group]) => (
                 <div key={originalId} className="original-work">
                     <div className="original-title">
                         {group.originalTitle}
-                        <span className="work-count">총 {group.novels.length}편</span>
+                        <span className="work-count">
+                            {Array.isArray(group.novels) ? group.novels.length : 0} 작품
+                        </span>
                     </div>
                     <div className="novel-list">
-                        {group.novels.map((novel, index) => (
-                            <div key={novel.id} className="novel-item">
-                                <div className="novel-title">
-                                    <Link href="#"> {novel.name} </Link> (아직 내용 수정중..)
-                                    {index === 0 && <span className="new-tag">NEW</span>}
+                        {Array.isArray(group.novels) && group.novels.length > 0 ? (
+                            group.novels.map((novel) => (
+                                <div key={novel.id} className="novel-item">
+                                    <div className="novel-title">
+                                        <Link
+                                            href={{
+                                                pathname: '/EpisodeList',
+                                                query: { fanfiction_id: novel.id, name: novel.name },
+                                            }}
+                                        >
+                                            {novel.name}
+                                        </Link>
+                                        {isNew(novel.created_at) && <span className="new-tag">NEW</span>}
+                                    </div>
+                                    <div className="novel-info">
+                                        <span>연재중</span>
+                                        <span className="dot-divider">·</span>
+                                        <span>0화</span>
+                                        <span className="dot-divider">·</span>
+                                        <span className="update-time">{formatTime(novel.created_at)}</span>
+                                    </div>
+                                    <div className="novel-summary">{novel.summary}</div>
+                                    <div className="tags">
+                                        {novel.tag.split(", ").map((tag, tagIndex) => (
+                                            <span key={tagIndex} className="tag">{tag}</span>
+                                        ))}
+                                    </div>
                                 </div>
-                                <div className="novel-info">
-                                    <span>연재중</span>
-                                    <span className="dot-divider">·</span>
-                                    <span>0화</span>
-                                    <span className="dot-divider">·</span>
-                                    <span className="update-time">
-                                        {formatTime(novel.created_at)}
-                                    </span>
-                                </div>
-
-
-                                <div className="novel-summary">
-                                    {novel.summary}
-                                </div>
-
-                                <div className="tags">
-                                    {novel.tag.split(", ").map((tag, tagIndex) => (
-                                        <span key={tagIndex} className="tag">{tag}</span>
-                                    ))}
-                                </div>
-                                <div className="novel-meta">
-                                    <span>조회 0</span>
-                                    <span>추천 0</span>
-                                    <span>댓글 0</span>
-                                </div>
-                            </div>
-                        ))}
+                            ))
+                        ) : (
+                            <p>작품이 없습니다.</p>  // 배열이 없을 때 대체 UI
+                        )}
                     </div>
                 </div>
             ))}
@@ -84,28 +98,23 @@ const NovelList = () => {
     );
 };
 
+const isNew = (createdAt: string) => {
+    const now = new Date();
+    const targetDate = new Date(createdAt);
+    return (now.getTime() - targetDate.getTime()) / (1000 * 60 * 60) <= 72;
+};
 
-// 시간 포맷팅 함수
 const formatTime = (dateString: string) => {
     const now = new Date();
     const targetDate = new Date(dateString);
     const diffInMinutes = (now.getTime() - targetDate.getTime()) / (1000 * 60);
-    const diffInHours = diffInMinutes / 60;
 
-    if (diffInMinutes < 60) {
-        // 1시간 이내일 경우
-        const minutes = Math.floor(diffInMinutes);
-        return `${minutes}분 전`;
-    } else if (diffInHours < 24) {
-        // 24시간 이내일 경우
-        const hours = Math.floor(diffInHours);
-        return `${hours}시간 전`;
-    } else {
-        // 24시간 이후일 경우 MM.DD 형식으로 표시
-        const month = String(targetDate.getMonth() + 1).padStart(2, '0');
-        const day = String(targetDate.getDate()).padStart(2, '0');
-        return `${month}.${day}`;
-    }
+    if (diffInMinutes < 60) return `${Math.floor(diffInMinutes)}분 전`;
+    if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)}시간 전`;
+
+    const month = String(targetDate.getMonth() + 1).padStart(2, "0");
+    const day = String(targetDate.getDate()).padStart(2, "0");
+    return `${month}.${day}`;
 };
 
 export default NovelList;
