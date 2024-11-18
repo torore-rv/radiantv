@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
 // import "@/styles/globals.css";
 
 interface Novel {
@@ -46,7 +47,7 @@ const NovelList = () => {
                         {group.novels.map((novel, index) => (
                             <div key={novel.id} className="novel-item">
                                 <div className="novel-title">
-                                    {novel.name}
+                                    <Link href="#"> {novel.name} </Link> (아직 내용 수정중..)
                                     {index === 0 && <span className="new-tag">NEW</span>}
                                 </div>
                                 <div className="novel-info">
