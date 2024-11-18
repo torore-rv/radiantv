@@ -1,14 +1,13 @@
-// @ts-ignore
-import NextAuth from 'next-auth'
-import Google from 'next-auth/providers/google'
+import NextAuth, { AuthOptions } from 'next-auth'
+import GoogleProvider from 'next-auth/providers/google'
 
-const config = {
+export const authOptions: AuthOptions = {
     providers: [
-        Google({
+        GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID!,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET!
-        })
-    ]
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+        }),
+    ],
 }
 
-export default NextAuth(config)
+export default NextAuth(authOptions)
