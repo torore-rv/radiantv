@@ -8,9 +8,11 @@ export const authOptions: NextAuthOptions = {
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID!,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-        }),
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET!
+        })
     ],
+    secret: process.env.NEXTAUTH_SECRET, // 필수 추가
+    debug: true, // 디버깅 활성화
     callbacks: {
         async signIn({ user }) {
             try {
@@ -32,12 +34,11 @@ export const authOptions: NextAuthOptions = {
             // session.user가 존재하는지 먼저 확인
             if (session?.user) {
                 // 세션에 사용자 이메일 추가
-                session.user.email = user.email; // 이메일을 세션에 포함
+                session.user.email = user.email;
             }
             return session;
-        },
-    },
-    secret: process.env.NEXTAUTH_SECRET, // 필요 시 추가
+        }
+    }
 };
 
 export default NextAuth(authOptions);
