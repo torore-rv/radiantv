@@ -47,7 +47,7 @@ const Search = ({ onTagChange, onSearchSubmit }: SearchProps) => {
                     onChange={handleInputChange}
                     onKeyPress={handleKeyPress}
                     className="search-input flex-1 py-2 px-4 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="검색어를 입력하세요..."
+                    placeholder="태그는 하나만 검색해주세요"
                 />
                 <button
                     onClick={handleSearchSubmit}
@@ -56,9 +56,9 @@ const Search = ({ onTagChange, onSearchSubmit }: SearchProps) => {
                     검색
                 </button>
             </div>
-            <div className="flex flex-wrap gap-2 mt-2 text-sm text-gray-500">
-                ※ 태그는 하나만 검색해주세요
-            </div>
+            {/*<div className="flex flex-wrap gap-2 mt-2 text-sm text-gray-500">*/}
+            {/*    ※ 태그는 하나만 검색해주세요*/}
+            {/*</div>*/}
         </div>
     );
 };
