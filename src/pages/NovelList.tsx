@@ -105,8 +105,8 @@ const isNew = (createdAt: string) => {
 };
 
 const formatTime = (dateString: string) => {
-    const now = new Date();
     const targetDate = new Date(dateString);
+    const now = new Date();
     const diffInMinutes = (now.getTime() - targetDate.getTime()) / (1000 * 60);
 
     if (diffInMinutes < 60) return `${Math.floor(diffInMinutes)}분 전`;
