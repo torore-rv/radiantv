@@ -29,14 +29,6 @@ export const authOptions: NextAuthOptions = {
                 console.error('Error during signIn callback:', error);
                 return false; // DB 오류 발생 시 로그인 실패
             }
-        },
-        async session({ session, user }: { session: Session; user: User }) {
-            // session.user가 존재하는지 먼저 확인
-            if (session?.user) {
-                // 세션에 사용자 이메일 추가
-                session.user.email = user.email;
-            }
-            return session;
         }
     }
 };
