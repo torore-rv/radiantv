@@ -511,8 +511,8 @@ a:hover {
   font-family: 'MaruBuriExtraLight';
   font-family: 'MaruBuriLight';
   font-family: 'MaruBuri';
-  font-family: 'MaruBuriBold';
-  font-family: 'MaruBuriSemiBold';
+  /*font-family: 'MaruBuriBold';*/
+  /*font-family: 'MaruBuriSemiBold';*/
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
