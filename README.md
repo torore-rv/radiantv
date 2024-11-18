@@ -5,3 +5,6 @@
 
 ### Admin
 - https://radiantv.vercel.app/AdminPage
+
+### Settings
+- 
