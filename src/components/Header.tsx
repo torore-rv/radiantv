@@ -6,7 +6,7 @@ const Header = () => {
         <header>
             <div className="header-container flex justify-between items-center p-4">
                 <div style={{ fontWeight: "bold" }}>Radiant Violet</div>
-                <div style={{ fontSize: "0.9rem" }} onClick={() => signIn('logout')}>Login</div>
+                <div style={{ fontSize: "0.9rem" }} onClick={() => signIn('google')}>Login</div>
             </div>
         </header>
     );
