@@ -1,7 +1,6 @@
-// HomeLayout.tsx
-import React from 'react';
-import Profile from '@/components/Profile';
-import { useRouter } from 'next/router';
+// components/HomeLayout.tsx
+import { useRouter } from "next/router";
+import Profile from "@/components/Profile";
 
 interface HomeLayoutProps {
     children: React.ReactNode;
@@ -15,4 +14,4 @@ export default function HomeLayout({ children }: HomeLayoutProps) {
             <div>{children}</div>
         </div>
     );
-};
+}
