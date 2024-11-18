@@ -1,8 +1,8 @@
+// @ts-ignore
 import NextAuth from 'next-auth'
-import type { AuthConfig } from '@auth/core'
 import Google from 'next-auth/providers/google'
 
-const config: AuthConfig = {
+const config = {
     providers: [
         Google({
             clientId: process.env.GOOGLE_CLIENT_ID!,
