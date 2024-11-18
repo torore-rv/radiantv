@@ -8,6 +8,7 @@ interface Novel {
     summary: string;
     tag: string;
     description: string;
+    no: number;
     created_at: string;
     original_title: string;
 }
@@ -78,7 +79,7 @@ const NovelList: React.FC<NovelListProps> = ({ filterTags, searchQuery }) => {
                                     <div className="novel-info">
                                         <span>연재중</span>
                                         <span className="dot-divider">·</span>
-                                        <span>0화</span>
+                                        <span>{novel.no} 화</span>
                                         <span className="dot-divider">·</span>
                                         <span className="update-time">{formatTime(novel.created_at)}</span>
                                     </div>

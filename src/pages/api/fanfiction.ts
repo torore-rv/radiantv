@@ -9,6 +9,7 @@ interface FanfictionRow {
     summary: string;
     tag: string;
     description: string;
+    no: number;
     created_at: Date;
     original_title: string;
 }
@@ -25,6 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     f.summary,
                     f.tag,
                     f.description,
+                    e.no,
                     e.created_at AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Seoul' AS created_at,
                     o.title as original_title
                 FROM fanfiction f
