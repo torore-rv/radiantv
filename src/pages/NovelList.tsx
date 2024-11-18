@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { toZonedTime } from 'date-fns-tz';
 import Link from "next/link";
 
 interface Novel {
@@ -98,16 +99,29 @@ const NovelList: React.FC<NovelListProps> = ({ filterTags, searchQuery }) => {
     );
 };
 
+const getClientTimeZone = () => {
+    return Intl.DateTimeFormat().resolvedOptions().timeZone; // 클라이언트의 시간대
+};
+
 const isNew = (createdAt: string) => {
+    const timeZone = getClientTimeZone(); // 클라이언트 시간대 가져오기
     const now = new Date();
-    const targetDate = new Date(createdAt);
-    return (now.getTime() - targetDate.getTime()) / (1000 * 60 * 60) <= 72;
+
+    // UTC 시간을 클라이언트 시간대로 변환
+    const targetDate = toZonedTime(new Date(createdAt), timeZone);
+    const nowInTimeZone = toZonedTime(now, timeZone);
+
+    // 시간 차이 계산
+    return (nowInTimeZone.getTime() - targetDate.getTime()) / (1000 * 60 * 60) <= 72;
 };
 
 const formatTime = (dateString: string) => {
-    const targetDate = new Date(dateString);
+    const timeZone = getClientTimeZone(); // 클라이언트 시간대 가져오기
+    const targetDate = toZonedTime(new Date(dateString), timeZone); // UTC 시간 -> 클라이언트 시간대
     const now = new Date();
-    const diffInMinutes = (now.getTime() - targetDate.getTime()) / (1000 * 60);
+    const nowInTimeZone = toZonedTime(now, timeZone);
+
+    const diffInMinutes = (nowInTimeZone.getTime() - targetDate.getTime()) / (1000 * 60);
 
     if (diffInMinutes < 60) return `${Math.floor(diffInMinutes)}분 전`;
     if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)}시간 전`;
