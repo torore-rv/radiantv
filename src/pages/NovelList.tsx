@@ -77,7 +77,7 @@ const NovelList: React.FC<NovelListProps> = ({ filterTags, searchQuery }) => {
                                         {isNew(novel.created_at) && <span className="new-tag">NEW</span>}
                                     </div>
                                     <div className="novel-info">
-                                        <span>연재중</span>
+                                        <span>{novel.description}</span>
                                         <span className="dot-divider">·</span>
                                         <span>{novel.no} 화</span>
                                         <span className="dot-divider">·</span>
