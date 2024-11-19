@@ -45,7 +45,7 @@ const Episode = () => {
 
     const goBack = () => {
         router.replace(
-            `/EpisodeList?fanfiction_id=${fanfiction_id}&name=${episodeName}`, // 'episodeName'을 사용
+            `/EpisodeList?fanfiction_id=${fanfiction_id}&name=${episodeName}`,
             undefined,
             { shallow: true }
         ).then(() => {
@@ -54,11 +54,20 @@ const Episode = () => {
     };
 
     return (
-        <NovelLayout onGoBack={goBack}>
+        <div>
             <div className="novel">
-                {textToHTML(content)} {/* 교체된 content 출력 */}
+                {textToHTML(content)}
             </div>
-        </NovelLayout>
+
+            {/* Styling the '뒤로가기' button */}
+            <button
+                onClick={goBack}
+                className="button-common"
+                style={{ margin: '20px' }}
+            >
+                뒤로가기
+            </button>
+        </div>
     );
 };
 

@@ -27,6 +27,10 @@ const EpisodeList = () => {
         return <div>로딩 중...</div>;
     }
 
+    const goToNovelLayout = () => {
+        router.push("/NovelLayout"); // Navigate to the NovelLayout page
+    };
+
     return (
         <div className="novel">
             <div className="title">{episodeName}</div> {/* 전달받은 episodeName을 제목으로 표시 */}
@@ -47,9 +51,14 @@ const EpisodeList = () => {
 
             <br /><br />
 
-            <div className="navigation">
-                <Link href="/NovelLayout" className="home-button">목록</Link>
-            </div>
+            <button
+                onClick={goToNovelLayout}
+                className="button-common"
+                style={{ color: 'white' }}
+            >
+                목록
+            </button>
+
         </div>
     );
 };
