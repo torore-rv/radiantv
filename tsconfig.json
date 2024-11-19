@@ -19,6 +19,7 @@
       "@/components/*": ["src/components/*"],   // components alias 설정
       "@pages/*": ["src/pages/*"],              // pages alias 설정
       "@lib/*": ["lib/*"],                      // lib alias 설정
+      "@/interfaces/*": ["types/*"],            // types alias 설정
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

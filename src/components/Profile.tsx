@@ -4,9 +4,19 @@ export default function Profile() {
     return (
         <div className="profile-container">
             <div className="profile-content">
-                <h1 className="profile-title">TORORE (토로레, T양)</h1>
+                <h1 className="profile-title">Radiant Violet</h1>
 
                 <div className="profile-section">
+                    <div className="profile-item">
+                        <span className="label">About</span>
+                        <span className="text">Only 드림소설 이름변환 사이트</span>
+                    </div>
+
+                    <div className="profile-item">
+                        <span className="label">Owner</span>
+                        <span className="text">TORORE (토로레, T양)</span>
+                    </div>
+
                     <div className="profile-item">
                         <span className="label">Like</span>
                         <span className="text">2차 / 드림 / 노멀커플링(헤테로러브, HL)</span>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { utcToZonedTime } from 'date-fns-tz';
+import { utcToZonedTime, format } from 'date-fns-tz';
 import Link from "next/link";
 
 interface Novel {
@@ -100,48 +100,48 @@ const NovelList: React.FC<NovelListProps> = ({ filterTags, searchQuery }) => {
         </>
     );
 };
-// 클라이언트 시간대 가져오기
-const getClientTimeZone = () => {
-    const clientTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    // console.log('Client TimeZone:', clientTimeZone); // 클라이언트의 타임존 로그
-    return clientTimeZone; // 클라이언트의 타임존 리턴
+
+// Get the client's timezone
+const getClientTimeZone = (): string => {
+    return Intl.DateTimeFormat().resolvedOptions().timeZone;
 };
 
-const isNew = (createdAt: string) => {
-    const timeZone = getClientTimeZone(); // 클라이언트 시간대 가져오기
+// Convert UTC date string to client's local time
+const convertToLocalTime = (utcDateString: string): Date => {
+    const timeZone = getClientTimeZone();
+    return utcToZonedTime(new Date(utcDateString), timeZone);
+};
+
+// Check if a novel is new (posted within last 72 hours)
+const isNew = (createdAt: string): boolean => {
+    const localCreatedAt = convertToLocalTime(createdAt);
     const now = new Date();
+    const localNow = utcToZonedTime(now, getClientTimeZone());
 
-    // 서버에서 받은 UTC 시간을 클라이언트 시간대로 변환
-    const targetDate = utcToZonedTime(new Date(createdAt), timeZone);
-    // console.log('Converted targetDate:', targetDate); // 변환된 시간 출력
-
-    // 현재 시간을 클라이언트 시간대에 맞게 변환
-    const nowInTimeZone = utcToZonedTime(now, timeZone);
-    // console.log('Converted nowInTimeZone:', nowInTimeZone); // 변환된 현재 시간 출력
-
-    // 시간 차이 계산 (72시간 이내인지 비교)
-    const diffInHours = (nowInTimeZone.getTime() - targetDate.getTime()) / (1000 * 60 * 60); // 시간 차이 계산
-
+    const diffInHours = (localNow.getTime() - localCreatedAt.getTime()) / (1000 * 60 * 60);
     return diffInHours <= 72;
 };
 
-const formatTime = (dateString: string) => {
-    const timeZone = getClientTimeZone(); // 클라이언트 시간대 가져오기
-    const targetDate = utcToZonedTime(new Date(dateString), timeZone); // UTC 시간을 클라이언트 시간대에 맞게 변환
-    // console.log('Converted targetDate:', targetDate); // 변환된 시간 출력
-
+// Format the time difference in a human-readable way
+const formatTime = (dateString: string): string => {
+    const localDate = convertToLocalTime(dateString);
     const now = new Date();
-    const nowInTimeZone = utcToZonedTime(now, timeZone); // 현재 시간을 클라이언트 시간대에 맞게 변환
-    // console.log('Converted nowInTimeZone:', nowInTimeZone); // 변환된 현재 시간 출력
+    const localNow = utcToZonedTime(now, getClientTimeZone());
 
-    const diffInMinutes = (nowInTimeZone.getTime() - targetDate.getTime()) / (1000 * 60); // 분 단위로 차이 계산
+    const diffInMinutes = (localNow.getTime() - localDate.getTime()) / (1000 * 60);
 
-    if (diffInMinutes < 60) return `${Math.floor(diffInMinutes)}분 전`;
-    if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)}시간 전`;
+    // Less than an hour ago
+    if (diffInMinutes < 60) {
+        return `${Math.floor(diffInMinutes)}분 전`;
+    }
 
-    const month = String(targetDate.getMonth() + 1).padStart(2, "0");
-    const day = String(targetDate.getDate()).padStart(2, "0");
-    return `${month}.${day}`;
+    // Less than 24 hours ago
+    if (diffInMinutes < 1440) {
+        return `${Math.floor(diffInMinutes / 60)}시간 전`;
+    }
+
+    // More than 24 hours ago - show MM.DD format
+    return format(localDate, 'MM.dd', { timeZone: getClientTimeZone() });
 };
 
 

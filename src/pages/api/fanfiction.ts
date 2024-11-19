@@ -27,7 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     f.tag,
                     f.description,
                     e.no,
-                    e.created_at AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Seoul' AS created_at,
+                    e.created_at,
                     o.title as original_title
                 FROM fanfiction f
                          LEFT OUTER JOIN original o ON f.original_id = o.id
