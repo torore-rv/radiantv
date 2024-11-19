@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 import Search from "@/components/Search";  // 직접 import로 변경
 
 const NovelList = dynamic(() => import("./NovelList"));
-const NameChange = dynamic(() => import("@/components/NameChange"));
+const NameChange = dynamic(() => import("@pages/NameChange"));
 
 interface NovelLayoutProps {}
 
@@ -22,7 +22,6 @@ const NovelLayout: React.FC<NovelLayoutProps> = () => {
     return (
         <div>
             <Search onTagChange={handleTagChange} onSearchSubmit={handleSearchSubmit} />
-            <NameChange />
             <NovelList filterTags={filterTags} searchQuery={searchQuery} />
         </div>
     );

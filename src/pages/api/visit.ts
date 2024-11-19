@@ -17,7 +17,7 @@ export default async function handler(
                 const todayVisitorsResult = await pool.query(
                     `SELECT COUNT(*)
                      FROM visit
-                     WHERE (last_visited AT TIME ZONE 'Asia/Seoul')::date = 
+                     WHERE last_visited::date = 
                            (now() AT TIME ZONE 'Asia/Seoul')::date;`
                 );
                 const todayVisitors = parseInt(todayVisitorsResult.rows[0].count, 10);
