@@ -19,7 +19,7 @@ const EpisodeList = () => {
                 try {
                     const response = await fetch(`/api/episodeList?fanfiction_id=${fanfiction_id}`);
                     const data = await response.json();
-                    console.log("Fetched data:", data); // Log the fetched data for debugging
+                    // console.log("Fetched data:", data);
 
                     // Assuming the API returns data in the expected structure
                     setEpisodes(data.episodes);
