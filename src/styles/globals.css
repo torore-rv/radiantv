@@ -37,8 +37,6 @@
 
 body {
   font-family: 'omyu_pretty', sans-serif;
-  /*background-color: var(--background-color);*/
-  /*color: var(--primary-color);*/
   line-height: 1.6;
   max-width: 800px;
   margin: 0 auto;
@@ -105,15 +103,6 @@ nav a.active {
 
 
 /* Search */
-/*.search-container {*/
-/*  max-width: 800px; !* body와 동일한 max-width *!*/
-/*  padding: 1rem;*/
-/*  !*background: var(--card-bg);*!*/
-/*  border-bottom: 1px solid var(--border-color);*/
-/*  !*border-radius: 12px;*!*/
-/*  !*box-shadow: 0 2px 4px rgba(0,0,0,0.05);*!*/
-/*}*/
-
 .search-input, .name-input {
   flex: 1; /* 추가: 남은 공간을 차지하도록 */
   padding: 0.8rem;
@@ -203,6 +192,7 @@ nav a.active {
 /* Novel */
 .novel-list {
   padding: 1rem;
+  background: rgba(237, 237, 237, 0.35);
 }
 
 .novel-item {
