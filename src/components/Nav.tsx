@@ -15,7 +15,7 @@ const Nav = () => {
                 <Link href="/NovelLayout" className={currentPath === '/NovelLayout' ? 'active' : ''}>장편</Link>
                 {session && (
                     <>
-                        {/*<Link href="/NovelShort" className={currentPath === '/NovelShort' ? 'active' : ''}>중단편</Link>*/}
+                        <Link href="/NovelShort" className={currentPath === '/NovelShort' ? 'active' : ''}>중단편</Link>
                         <Link href="/AdminPage" className={currentPath === '/AdminPage' ? 'active' : ''}>Admin</Link>
                     </>
                 )}

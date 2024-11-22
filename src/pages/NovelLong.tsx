@@ -26,7 +26,7 @@ interface NovelListProps {
 }
 
 
-const NovelList: React.FC<NovelListProps> = ({ filterTags, searchQuery }) => {
+const NovelLong: React.FC<NovelListProps> = ({ filterTags, searchQuery }) => {
     const [novels, setNovels] = useState<GroupedData>({});
 
     useEffect(() => {
@@ -145,4 +145,4 @@ const formatTime = (dateString: string): string => {
 };
 
 
-export default NovelList;
+export default NovelLong;
